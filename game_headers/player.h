@@ -34,6 +34,12 @@ public:
         health = h;
     }
     void simulate(int h){
-        health = health - h;
+        int predicted_health = health - h;
+        if(predicted_health < 0){
+            health = 0;
+        } else{
+            health = health - h;
+        }
+
     }
 };

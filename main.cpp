@@ -76,7 +76,7 @@ int main() {
                     std::string player_stats = "player health: " + to_string(p.getHealth());
                     s.log(boss_stats);
                     s.log(player_stats);
-                    if(gm.r.tunnel.b.getHealth() < 0){
+                    if(gm.r.tunnel.b.getHealth() == 0){
                         game_use = false;
                     }
                 } else{
