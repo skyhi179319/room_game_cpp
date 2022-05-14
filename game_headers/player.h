@@ -1,0 +1,39 @@
+#include <iostream>
+class player {
+public:
+    std::string firstname;
+    std::string lastname;
+    int health;
+    struct {
+        bool knife;
+        bool flashlight;
+    } items;
+    player(std::string firstName, std::string lastName) {
+        firstname = firstName;
+        lastname = lastName;
+        health = 100;
+        items.knife = false;
+        items.flashlight = false;
+    }
+    void minusHealth(){
+        health = health - 10;
+    }
+    void addHealth(){
+        health = health + 10;
+    }
+    void addKnife(){
+        items.knife = true;
+    }
+    void addFlashlight(){
+        items.flashlight = true;
+    }
+    int getHealth(){
+        return health;
+    }
+    void setHealth(int h){
+        health = h;
+    }
+    void simulate(int h){
+        health = health - h;
+    }
+};
