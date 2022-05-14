@@ -2,18 +2,18 @@
 #include <time.h>
 #include <stdlib.h>
 class math {       
-  public:            
-    void add(int x, int y) {
-      std::cout << x + y;
+  public:
+    int add(int x,int y){
+        return x + y;
     }
-    void multiply(int x, int y){
-      std::cout << x * y;
+    int multiply(int x, int y){
+      return x * y;
     }
-    void subtract(int x,int y){
-      std::cout << x - y;
+    int subtract(int x,int y){
+      return x - y;
     }
-    void divide(int x,int y){
-      std::cout << x / y;
+    int divide(int x,int y){
+      return x / y;
     }
     int random(int high,int low){
         srand(time(0));
