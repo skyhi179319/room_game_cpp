@@ -61,16 +61,27 @@ int main() {
             std::string stats = "player health " + to_string(p.getHealth());
             s.log(stats);
         }else if(input_in == before_user_input + "tunnel"){
-            if(gm.r.tunnel.b.getHealth() > 0){
-                new_random nr(50,5);
-                gm.r.tunnel.simulate_boss(nr.Random());
-                p.simulate(nr.Random());
-                std::string boss_stats = "boss health " + to_string(gm.r.tunnel.b.getHealth());
-                std::string player_stats = "player health " + to_string(p.getHealth());
-                s.log(boss_stats);
+            if(p.items.knife == false || p.items.flashlight == false){
+                p.minusHealth();
+                std::string player_stats = "player health: " + to_string(p.getHealth());
                 s.log(player_stats);
-            } else{
-                s.log("Already defeated boss");
+                s.log("can't go in tunnel without the flashlight and knife");
+            }
+            else{
+                if(gm.r.tunnel.b.getHealth() > 0){
+                    new_random nr(50,5);
+                    gm.r.tunnel.simulate_boss(nr.Random());
+                    p.simulate(nr.Random());
+                    std::string boss_stats = "boss health: " + to_string(gm.r.tunnel.b.getHealth());
+                    std::string player_stats = "player health: " + to_string(p.getHealth());
+                    s.log(boss_stats);
+                    s.log(player_stats);
+                    if(gm.r.tunnel.b.getHealth() < 0){
+                        game_use = false;
+                    }
+                } else{
+                    s.log("Already defeated boss");
+                }
             }
         }
         else{
