@@ -7,6 +7,7 @@ public:
     struct {
         bool knife;
         bool flashlight;
+        bool gun;
     } items;
     player(std::string firstName, std::string lastName) {
         firstname = firstName;
@@ -14,6 +15,7 @@ public:
         health = 100;
         items.knife = false;
         items.flashlight = false;
+        items.gun = false;
     }
     void minusHealth(){
         health = health - 10;
@@ -26,6 +28,9 @@ public:
     }
     void addFlashlight(){
         items.flashlight = true;
+    }
+    void addGun(){
+        items.gun = true;
     }
     int getHealth(){
         return health;

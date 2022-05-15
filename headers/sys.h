@@ -2,6 +2,7 @@
 #include "math.h"
 #include "input.h"
 #include "convert.h"
+#include <stdlib.h>
 class sys {       
   public:     
     // imports all header class
@@ -10,10 +11,20 @@ class sys {
     convert convert;
     // console methods
     void log(std::string x){
-      std::cout << x + "\n";
+        std::cout << x;
+        std::cout << "\n";
     }
     void log(int x){
       std::cout << x;
       std::cout << "\n";
+    }
+    // create line for console
+    void createLine(int x){
+        std::string line;
+        for (int i = 0; i < x; i++) {
+            line.append("-");
+        }
+        std::cout << line;
+        std::cout << "\n";
     }
 };

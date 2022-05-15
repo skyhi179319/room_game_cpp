@@ -27,24 +27,24 @@ public:
     tunnel tunnel;
     // item generator
     std::string pickItemForRoom(int r){
-        std::string arrayNum[4] = {"damage", "flashlight", "knife", "food"};
+        std::string arrayNum[5] = {"damage", "flashlight", "knife", "food","gun"};
         return arrayNum[r];
     }
     // picks item from generator
     std::string room_north_item(){
-        new_random r(4,0);
+        new_random r(5,0);
         return pickItemForRoom(r.Random());
     }
     std::string room_east_item(){
-        new_random r(4,0);
+        new_random r(5,0);
         return pickItemForRoom(r.Random());
     }
     std::string room_south_item(){
-        new_random r(4,0);
+        new_random r(5,0);
         return pickItemForRoom(r.Random());
     }
     std::string room_west_item(){
-        new_random r(4,0);
+        new_random r(5,0);
         return pickItemForRoom(r.Random());
     }
     // creates the rooms and tries to diverse items
@@ -81,6 +81,8 @@ public:
             return "flashlight";
         } else if(item == "knife"){
             return "knife";
+        }else if(item == "gun"){
+            return "gun";
         }
     }
 };

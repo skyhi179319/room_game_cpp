@@ -3,7 +3,6 @@
 class boss {
 public:
     int health;
-
     boss() {
         health = 100;
     }
