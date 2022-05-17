@@ -147,12 +147,6 @@ int main() {
     scoring score(p.getHealth(),p.items.gun,mode_in);
     s.log(to_string(score.returnTotal()));
     s.createLine(55);
-    s.log("mode score = " + to_string(score.modeScore()));
-    s.createLine(55);
-    s.log("gun score = " + to_string(score.hasGun()));
-    s.createLine(55);
-    s.log("health score = " + to_string(score.remainingHealth()));
-    s.createLine(55);
     // terminate program
     return 0;
 }
