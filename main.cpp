@@ -2,6 +2,7 @@
 #include "headers/sys.h"
 #include "game_headers//game.h"
 #include "game_headers//damage.h"
+#include "game_headers//scoring.h"
 using namespace std;
 
 int main() {
@@ -139,12 +140,19 @@ int main() {
             }
         }
         else{
-            // kills player for invalid response
-            s.log("ERROR: invalid response - killed player");
-            p.setHealth(0);
-            game_use = false;
+            s.log("ERROR: invalid response");
+            s.createLine(55);
         }
     }
+    scoring score(p.getHealth(),p.items.gun,mode_in);
+    s.log(to_string(score.returnTotal()));
+    s.createLine(55);
+    s.log("mode score = " + to_string(score.modeScore()));
+    s.createLine(55);
+    s.log("gun score = " + to_string(score.hasGun()));
+    s.createLine(55);
+    s.log("health score = " + to_string(score.remainingHealth()));
+    s.createLine(55);
     // terminate program
     return 0;
 }

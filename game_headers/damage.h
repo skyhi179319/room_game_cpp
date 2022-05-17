@@ -14,7 +14,7 @@ public:
         } else if(mode == "hard"){
             knife = 10;
             gun = 20;
-            spear = 15;
+            spear = 20;
         }
     }
 
