@@ -18,6 +18,12 @@ class sys {
       std::cout << x;
       std::cout << "\n";
     }
+    // array
+    void printArray(std::string arr[]){
+        for (int i = 0; i < 4; i++) {
+            std::cout << arr[i] << "\n";
+        }
+    }
     // create line for console
     void createLine(int x){
         std::string line;

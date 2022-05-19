@@ -38,10 +38,8 @@ int main() {
     s.createLine(55);
     // creates room;
     gm.r.createRooms();
-    s.log(gm.r.room_north);
-    s.log(gm.r.room_east);
-    s.log(gm.r.room_south);
-    s.log(gm.r.room_west);
+    std::string room_array[4] = {gm.r.room_north,gm.r.room_east,gm.r.room_south,gm.r.room_west};
+    s.printArray(room_array);
     // creating a line
     s.createLine(55);
     // plays game while health is above 0
