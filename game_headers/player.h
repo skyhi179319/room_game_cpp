@@ -8,7 +8,13 @@ public:
         bool knife;
         bool flashlight;
         bool gun;
+        bool twoTimesMultiplier;
     } items;
+    struct {
+        int wins;
+        int losses;
+        int ties;
+    } chances;
     player(std::string firstName, std::string lastName) {
         firstname = firstName;
         lastname = lastName;
@@ -16,12 +22,16 @@ public:
         items.knife = false;
         items.flashlight = false;
         items.gun = false;
+        items.twoTimesMultiplier = false;
     }
     void minusHealth(){
         health = health - 10;
     }
     void addHealth(){
         health = health + 10;
+    }
+    void addHealth(int i){
+        health = health + i;
     }
     void addKnife(){
         items.knife = true;
@@ -31,6 +41,9 @@ public:
     }
     void addGun(){
         items.gun = true;
+    }
+    void addMultiplier(){
+        items.twoTimesMultiplier = true;
     }
     int getHealth(){
         return health;
@@ -45,6 +58,5 @@ public:
         } else{
             health = health - h;
         }
-
     }
 };

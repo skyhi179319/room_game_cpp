@@ -2,6 +2,7 @@
 #include "math.h"
 #include "input.h"
 #include "convert.h"
+#include "file.h"
 #include <stdlib.h>
 class sys {       
   public:     
@@ -9,6 +10,7 @@ class sys {
     math math;
     input input;
     convert convert;
+    file file;
     // console methods
     void log(std::string x){
         std::cout << x;

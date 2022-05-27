@@ -6,6 +6,7 @@ public:
     int knife;
     int gun;
     int spear;
+    int player_spear;
     weapons(std::string mode){
         if(mode == "easy"){
             knife = 10;
