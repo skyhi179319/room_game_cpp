@@ -94,6 +94,7 @@ int main() {
     s.createLine(70);
     std::string mode_in = s.input.user_input(mode);
     weapons w(mode_in);
+    damage d;
     // creating a line
     s.createLine(70);
     // creates room;
@@ -160,7 +161,6 @@ int main() {
             else{
                 if(gm.r.tunnel.b.getHealth() > 0){
                     new_random nr(50,5);
-                    damage d;
                     // already know knife is true
                     if(p.items.gun == true){
                         // another user input
@@ -221,7 +221,7 @@ int main() {
             s.log("Coins: " + to_string(c.amount));
             s.createLine(70);
             std::string store_input;
-            s.input.input_text("please pick either health|multiplier|");
+            s.input.input_text("please pick either health|multiplier|gun|");
             s.createLine(70);
             std::string store_input_in = s.input.user_input(store_input);
             if(store_input_in == before_user_input + "health"){
@@ -242,6 +242,23 @@ int main() {
                     s.createLine(70);
                     s.log("can't buy multiplier");
                     s.createLine(70);
+                }
+            }else if(store_input_in == before_user_input + "gun"){
+                std::string gun_input;
+                s.input.input_text("please pick either |damage|");
+                s.createLine(70);
+                std::string gun_input_in = s.input.user_input(gun_input);
+                s.createLine(70);
+                if(gun_input_in == before_user_input + "damage"){
+                    if(c.buy(store.prices.gun_damage_cost)){
+                        p.addGunDamage();
+                        d.addGunDamage(w);
+                    }
+                    else{
+                        s.createLine(70);
+                        s.log("can't buy gun damage");
+                        s.createLine(70);
+                    }
                 }
             }else{
                 s.log("ERROR: invalid response");
@@ -276,7 +293,6 @@ int main() {
         }
         // write condition statements for each outcome
         if(s.file.exist(wins_file)){
-            s.file.deleteFile(wins_file);
             if(p.getHealth() > 0){
                 s.file.createFile(wins_file, to_string(p.chances.wins + 1));
             }
@@ -286,7 +302,6 @@ int main() {
             }
         }
         if(s.file.exist(losses_file)){
-            s.file.deleteFile(losses_file);
             if(p.getHealth() == 0){
                 s.file.createFile(losses_file, to_string(p.chances.losses + 1));
             }
@@ -296,7 +311,6 @@ int main() {
             }
         }
         if(s.file.exist(ties_files)){
-            s.file.deleteFile(ties_files);
             if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
                 s.file.createFile(ties_files, to_string(p.chances.ties + 1));
             }
@@ -309,7 +323,6 @@ int main() {
     else{
         s.file.mkDir("filesystem");
         if(s.file.exist(coins_file)){
-            s.file.deleteFile(coins_file);
             int total_coins = c.amount;
             s.file.createFile(coins_file, to_string(total_coins));
         }else{
@@ -317,33 +330,46 @@ int main() {
             s.file.createFile(coins_file, to_string(total_coins));
         }
         if(s.file.exist(wins_file)){
-            s.file.deleteFile(wins_file);
             if(p.getHealth() > 0){
                 s.file.createFile(wins_file, to_string(p.chances.wins + 1));
+            }
+            else{
+                s.file.createFile(wins_file, to_string(p.chances.wins));
             }
         }else{
             if(p.getHealth() > 0){
                 s.file.createFile(wins_file, to_string(p.chances.wins + 1));
+            }
+            else{
+                s.file.createFile(wins_file, to_string(p.chances.wins));
             }
         }
         if(s.file.exist(losses_file)){
-            s.file.deleteFile(losses_file);
             if(p.getHealth() == 0){
                 s.file.createFile(losses_file, to_string(p.chances.losses + 1));
+            }
+            else{
+                s.file.createFile(losses_file, to_string(p.chances.losses));
             }
         }else{
             if(p.getHealth() == 0){
                 s.file.createFile(losses_file, to_string(p.chances.losses + 1));
+            }
+            else{
+                s.file.createFile(losses_file, to_string(p.chances.losses));
             }
         }
         if(s.file.exist(ties_files)){
-            s.file.deleteFile(ties_files);
             if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
                 s.file.createFile(ties_files, to_string(p.chances.ties + 1));
+            }else{
+                s.file.createFile(ties_files, to_string(p.chances.ties));
             }
         }else{
             if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
                 s.file.createFile(ties_files, to_string(p.chances.ties + 1));
+            }else{
+                s.file.createFile(ties_files, to_string(p.chances.ties));
             }
         }
     }

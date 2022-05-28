@@ -8,6 +8,9 @@ public:
         bool knife;
         bool flashlight;
         bool gun;
+        struct{
+            bool damage;
+        }gun_upgrades;
         bool twoTimesMultiplier;
     } items;
     struct {
@@ -41,6 +44,9 @@ public:
     }
     void addGun(){
         items.gun = true;
+    }
+    void addGunDamage(){
+        items.gun_upgrades.damage = true;
     }
     void addMultiplier(){
         items.twoTimesMultiplier = true;

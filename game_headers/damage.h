@@ -27,4 +27,7 @@ public:
         int damage_n = m.math.add(damage,critical);
         return damage_n;
     }
+    void addGunDamage(weapons w){
+        w.gun = w.gun + 10;
+    }
 };

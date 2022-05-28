@@ -40,9 +40,11 @@ public:
     struct{
         int twoTimesMultiplier;
         int tenHealth;
+        int gun_damage_cost;
     }prices;
     void setPrices(){
         prices.twoTimesMultiplier = 50;
         prices.tenHealth = 15;
+        prices.gun_damage_cost = 100;
     }
 };
