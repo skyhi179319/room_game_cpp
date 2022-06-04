@@ -4,12 +4,16 @@
 #include "game_headers//damage.h"
 #include "game_headers//scoring.h"
 #include "game_headers/store.h"
+#include "game_headers/createJSON.h"
 using namespace std;
-
+using namespace rapidjson;
+// system
+sys s;
+void createJSON(std::string name,int coins){
+    cj.createPlayer(name,coins);
+}
 int main() {
     bool game_use = true;
-    // system
-    sys s;
     // game functions
     game gm;
     // coins call
@@ -32,55 +36,39 @@ int main() {
     player p(firstname_in,lastname_in);
     // loading chances
     if(s.file.dirExist("filesystem")){
-        if(s.file.exist(wins_file)){
-            int wins = s.convert.convertFromString(s.file.readFile(wins_file));
+        if(s.file.exist(record_json)){
+            int wins = s.convert.convertFromString(s.JSON.getStringValue(record_json,"wins"));
+            int losses = s.convert.convertFromString(s.JSON.getStringValue(record_json,"losses"));
+            int ties = s.convert.convertFromString(s.JSON.getStringValue(record_json,"ties"));
             p.chances.wins = wins;
-        }else{
-            s.file.createFile(wins_file, to_string(0));
-            int wins = s.convert.convertFromString(s.file.readFile(wins_file));
-            p.chances.wins = wins;
-        }
-        if(s.file.exist(losses_file)){
-            int losses = s.convert.convertFromString(s.file.readFile(losses_file));
             p.chances.losses = losses;
-        }else{
-            s.file.createFile(losses_file, to_string(0));
-            int losses = s.convert.convertFromString(s.file.readFile(losses_file));
-            p.chances.losses = losses;
-        }
-        if(s.file.exist(ties_files)){
-            int ties = s.convert.convertFromString(s.file.readFile(ties_files));
             p.chances.ties = ties;
         }else{
-            s.file.createFile(ties_files, to_string(0));
-            int ties = s.convert.convertFromString(s.file.readFile(ties_files));
+            cj.createRecord(0,0,0);
+            int wins = s.convert.convertFromString(s.JSON.getStringValue(record_json,"wins"));
+            int losses = s.convert.convertFromString(s.JSON.getStringValue(record_json,"losses"));
+            int ties = s.convert.convertFromString(s.JSON.getStringValue(record_json,"ties"));
+            p.chances.wins = wins;
+            p.chances.losses = losses;
             p.chances.ties = ties;
         }
     }
     else{
         s.file.mkDir("filesystem");
-        if(s.file.exist(wins_file)){
-            int wins = s.convert.convertFromString(s.file.readFile(wins_file));
+        if(s.file.exist(record_json)){
+            int wins = s.convert.convertFromString(s.JSON.getStringValue(record_json,"wins"));
+            int losses = s.convert.convertFromString(s.JSON.getStringValue(record_json,"losses"));
+            int ties = s.convert.convertFromString(s.JSON.getStringValue(record_json,"ties"));
             p.chances.wins = wins;
-        }else{
-            s.file.createFile(wins_file, to_string(0));
-            int wins = s.convert.convertFromString(s.file.readFile(wins_file));
-            p.chances.wins = wins;
-        }
-        if(s.file.exist(losses_file)){
-            int losses = s.convert.convertFromString(s.file.readFile(losses_file));
             p.chances.losses = losses;
-        }else{
-            s.file.createFile(losses_file, to_string(0));
-            int losses = s.convert.convertFromString(s.file.readFile(losses_file));
-            p.chances.losses = losses;
-        }
-        if(s.file.exist(ties_files)){
-            int ties = s.convert.convertFromString(s.file.readFile(ties_files));
             p.chances.ties = ties;
         }else{
-            s.file.createFile(ties_files, to_string(0));
-            int ties = s.convert.convertFromString(s.file.readFile(ties_files));
+            cj.createRecord(0,0,0);
+            int wins = s.convert.convertFromString(s.JSON.getStringValue(record_json,"wins"));
+            int losses = s.convert.convertFromString(s.JSON.getStringValue(record_json,"losses"));
+            int ties = s.convert.convertFromString(s.JSON.getStringValue(record_json,"ties"));
+            p.chances.wins = wins;
+            p.chances.losses = losses;
             p.chances.ties = ties;
         }
     }
@@ -283,96 +271,77 @@ int main() {
     s.log(to_string(score.returnTotal()));
     s.createLine(70);
     if(s.file.dirExist("filesystem")){
-        if(s.file.exist(coins_file)){
-            s.file.deleteFile(coins_file);
+        if(s.file.exist(player_json)){
+            s.file.deleteFile(player_json);
             int total_coins = c.amount;
-            s.file.createFile(coins_file, to_string(total_coins));
+            createJSON(p.firstname,c.amount);
         }else{
             int total_coins = c.amount;
-            s.file.createFile(coins_file, to_string(total_coins));
+            createJSON(p.firstname,c.amount);;
         }
         // write condition statements for each outcome
-        if(s.file.exist(wins_file)){
+        if(s.file.exist(record_json)){
             if(p.getHealth() > 0){
-                s.file.createFile(wins_file, to_string(p.chances.wins + 1));
+                cj.createRecord(p.chances.wins + 1, p.chances.losses, p.chances.ties);
+            }
+            if(p.getHealth() == 0){
+                cj.createRecord(p.chances.wins, p.chances.losses + 1, p.chances.ties);
+            }
+            if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
+                cj.createRecord(p.chances.wins, p.chances.losses, p.chances.ties + 1);
             }
         }else{
             if(p.getHealth() > 0){
-                s.file.createFile(wins_file, to_string(p.chances.wins + 1));
+                cj.createRecord(p.chances.wins + 1, p.chances.losses, p.chances.ties);
             }
-        }
-        if(s.file.exist(losses_file)){
             if(p.getHealth() == 0){
-                s.file.createFile(losses_file, to_string(p.chances.losses + 1));
+                cj.createRecord(p.chances.wins, p.chances.losses + 1, p.chances.ties);
             }
-        }else{
-            if(p.getHealth() == 0){
-                s.file.createFile(losses_file, to_string(p.chances.losses + 1));
-            }
-        }
-        if(s.file.exist(ties_files)){
             if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
-                s.file.createFile(ties_files, to_string(p.chances.ties + 1));
-            }
-        }else{
-            if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
-                s.file.createFile(ties_files, to_string(p.chances.ties + 1));
+                cj.createRecord(p.chances.wins, p.chances.losses, p.chances.ties + 1);
             }
         }
     }
     else{
         s.file.mkDir("filesystem");
-        if(s.file.exist(coins_file)){
+        if(s.file.exist(player_json)){
+            s.file.deleteFile(player_json);
             int total_coins = c.amount;
-            s.file.createFile(coins_file, to_string(total_coins));
+            createJSON(p.firstname,c.amount);
         }else{
             int total_coins = c.amount;
-            s.file.createFile(coins_file, to_string(total_coins));
+            createJSON(p.firstname,c.amount);;
         }
-        if(s.file.exist(wins_file)){
+        // write condition statements for each outcome
+        if(s.file.exist(record_json)){
             if(p.getHealth() > 0){
-                s.file.createFile(wins_file, to_string(p.chances.wins + 1));
+                cj.createRecord(p.chances.wins + 1, p.chances.losses, p.chances.ties);
             }
-            else{
-                s.file.createFile(wins_file, to_string(p.chances.wins));
+            if(p.getHealth() == 0){
+                cj.createRecord(p.chances.wins, p.chances.losses + 1, p.chances.ties);
+            }
+            if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
+                cj.createRecord(p.chances.wins, p.chances.losses, p.chances.ties + 1);
             }
         }else{
             if(p.getHealth() > 0){
-                s.file.createFile(wins_file, to_string(p.chances.wins + 1));
+                cj.createRecord(p.chances.wins + 1, p.chances.losses, p.chances.ties);
             }
-            else{
-                s.file.createFile(wins_file, to_string(p.chances.wins));
-            }
-        }
-        if(s.file.exist(losses_file)){
             if(p.getHealth() == 0){
-                s.file.createFile(losses_file, to_string(p.chances.losses + 1));
+                cj.createRecord(p.chances.wins, p.chances.losses + 1, p.chances.ties);
             }
-            else{
-                s.file.createFile(losses_file, to_string(p.chances.losses));
-            }
-        }else{
-            if(p.getHealth() == 0){
-                s.file.createFile(losses_file, to_string(p.chances.losses + 1));
-            }
-            else{
-                s.file.createFile(losses_file, to_string(p.chances.losses));
-            }
-        }
-        if(s.file.exist(ties_files)){
             if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
-                s.file.createFile(ties_files, to_string(p.chances.ties + 1));
-            }else{
-                s.file.createFile(ties_files, to_string(p.chances.ties));
-            }
-        }else{
-            if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
-                s.file.createFile(ties_files, to_string(p.chances.ties + 1));
-            }else{
-                s.file.createFile(ties_files, to_string(p.chances.ties));
+                cj.createRecord(p.chances.wins, p.chances.losses, p.chances.ties + 1);
             }
         }
     }
+    createJSON(p.firstname,c.amount);
+    s.log(s.JSON.getDocument(player_json));
+    s.createLine(70);
+    s.log(s.JSON.getDocument(record_json));
+    s.createLine(70);
+    s.log(s.JSON.get(player_json,"data",1));
+    s.createLine(70);
     // terminate program
     return 0;
 }

@@ -1,8 +1,6 @@
 #include <iostream>
 // files
-const char coins_file[100] = "filesystem/coins.data";
-const char wins_file[100] = "filesystem/wins.data";
-const char losses_file[100] = "filesystem/losses.data";
-const char ties_files[100] = "filesystem/ties.data";
+const char record_json[100] = "filesystem/record.json";
+const char player_json[100] = "filesystem/player.json";
 // maxes
-int MAX_COINS = 500;
+int MAX_COINS = 1500;

@@ -26,6 +26,7 @@ public:
         items.flashlight = false;
         items.gun = false;
         items.twoTimesMultiplier = false;
+        // added gun damage
     }
     void minusHealth(){
         health = health - 10;

@@ -4,6 +4,7 @@
 #include "convert.h"
 #include "file.h"
 #include <stdlib.h>
+#include "JSON.h"
 class sys {       
   public:     
     // imports all header class
@@ -11,6 +12,7 @@ class sys {
     input input;
     convert convert;
     file file;
+    JSON JSON;
     // console methods
     void log(std::string x){
         std::cout << x;

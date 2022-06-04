@@ -10,9 +10,9 @@ public:
     int amount;
     coins(){
         sys s;
-        if(s.file.exist(coins_file)){
-            int coins_have = s.convert.convertFromString(s.file.readFile(coins_file));
-            if(MAX_COINS < coins_have){
+        if(s.file.exist(player_json)){
+            int coins_have = s.convert.convertFromString(s.JSON.get(player_json,"data",1));
+            if(coins_have < MAX_COINS){
                 amount = coins_have;
             } else{
                 amount = 30;
