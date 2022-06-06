@@ -5,8 +5,8 @@
 #include "file.h"
 #include <stdlib.h>
 #include "JSON.h"
-class sys {       
-  public:     
+class sys {
+  public:
     // imports all header class
     math math;
     input input;

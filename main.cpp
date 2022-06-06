@@ -258,7 +258,7 @@ int main() {
             s.log("Last Damage: " + to_string(gm.r.tunnel.b.returnLastDamage()));
             s.createLine(70);
             std::string record = to_string(p.chances.wins) + "-" + to_string(p.chances.losses) +
-                    "-" + to_string(p.chances.ties);
+                                 "-" + to_string(p.chances.ties);
             s.log("Record: " + record);
             s.createLine(70);
         }

@@ -3,6 +3,7 @@ using namespace std;
 
 class createJSON {
 public:
+    std::string dir_name;
     void createPlayer(std::string name,int coins){
         std::string q = "\"";
         std::string b = "{";
