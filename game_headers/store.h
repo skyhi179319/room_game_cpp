@@ -1,17 +1,19 @@
 // testing purposes
 /*
  * #include "../headers//sys.h"
+ * #include "../headers/JSON.h"
+ *
 */
-
 #include "config.h"
 #include <iostream>
+JSON_CREATOR player_store_file(player_json);
 class coins{
 public:
     int amount;
     coins(){
         sys s;
         if(s.file.exist(player_json)){
-            int coins_have = s.convert.convertFromString(s.JSON.get(player_json,"data",1));
+            int coins_have = s.convert.convertFromString(player_store_file.get("data",1));
             if(coins_have < MAX_COINS){
                 amount = coins_have;
             } else{

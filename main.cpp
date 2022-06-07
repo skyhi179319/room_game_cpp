@@ -4,14 +4,14 @@
 #include "game_headers//damage.h"
 #include "game_headers//scoring.h"
 #include "game_headers/store.h"
-#include "game_headers/createJSON.h"
 using namespace std;
 using namespace rapidjson;
 // system
 sys s;
-void createJSON(std::string name,int coins){
-    cj.createPlayer(name,coins);
-}
+// JSON CREATOR classes
+JSON_CREATOR record(record_json);
+JSON_CREATOR player_file(player_json);
+// Main program
 int main() {
     bool game_use = true;
     // game functions
@@ -37,17 +37,24 @@ int main() {
     // loading chances
     if(s.file.dirExist("filesystem")){
         if(s.file.exist(record_json)){
-            int wins = s.convert.convertFromString(s.JSON.getStringValue(record_json,"wins"));
-            int losses = s.convert.convertFromString(s.JSON.getStringValue(record_json,"losses"));
-            int ties = s.convert.convertFromString(s.JSON.getStringValue(record_json,"ties"));
+            int wins = s.convert.convertFromString(record.getString("wins"));
+            int losses = s.convert.convertFromString(record.getString("losses"));
+            int ties = s.convert.convertFromString(record.getString("ties"));
             p.chances.wins = wins;
             p.chances.losses = losses;
             p.chances.ties = ties;
         }else{
-            cj.createRecord(0,0,0);
-            int wins = s.convert.convertFromString(s.JSON.getStringValue(record_json,"wins"));
-            int losses = s.convert.convertFromString(s.JSON.getStringValue(record_json,"losses"));
-            int ties = s.convert.convertFromString(s.JSON.getStringValue(record_json,"ties"));
+            record.start_Document();
+            record.createAttribute("wins", to_string(0));
+            record.addComma();
+            record.createAttribute("losses", to_string(0));
+            record.addComma();
+            record.createAttribute("ties", to_string(0));
+            record.end_Document();
+            record.save();
+            int wins = s.convert.convertFromString(record.getString("wins"));
+            int losses = s.convert.convertFromString(record.getString("losses"));
+            int ties = s.convert.convertFromString(record.getString("ties"));
             p.chances.wins = wins;
             p.chances.losses = losses;
             p.chances.ties = ties;
@@ -56,17 +63,24 @@ int main() {
     else{
         s.file.mkDir("filesystem");
         if(s.file.exist(record_json)){
-            int wins = s.convert.convertFromString(s.JSON.getStringValue(record_json,"wins"));
-            int losses = s.convert.convertFromString(s.JSON.getStringValue(record_json,"losses"));
-            int ties = s.convert.convertFromString(s.JSON.getStringValue(record_json,"ties"));
+            int wins = s.convert.convertFromString(record.getString("wins"));
+            int losses = s.convert.convertFromString(record.getString("losses"));
+            int ties = s.convert.convertFromString(record.getString("ties"));
             p.chances.wins = wins;
             p.chances.losses = losses;
             p.chances.ties = ties;
         }else{
-            cj.createRecord(0,0,0);
-            int wins = s.convert.convertFromString(s.JSON.getStringValue(record_json,"wins"));
-            int losses = s.convert.convertFromString(s.JSON.getStringValue(record_json,"losses"));
-            int ties = s.convert.convertFromString(s.JSON.getStringValue(record_json,"ties"));
+            record.start_Document();
+            record.createAttribute("wins", to_string(0));
+            record.addComma();
+            record.createAttribute("losses", to_string(0));
+            record.addComma();
+            record.createAttribute("ties", to_string(0));
+            record.end_Document();
+            record.save();
+            int wins = s.convert.convertFromString(record.getString("wins"));
+            int losses = s.convert.convertFromString(record.getString("losses"));
+            int ties = s.convert.convertFromString(record.getString("ties"));
             p.chances.wins = wins;
             p.chances.losses = losses;
             p.chances.ties = ties;
@@ -273,32 +287,80 @@ int main() {
     if(s.file.dirExist("filesystem")){
         if(s.file.exist(player_json)){
             s.file.deleteFile(player_json);
-            int total_coins = c.amount;
-            createJSON(p.firstname,c.amount);
+            player_file.start_Document();
+            std::string data[2] = {p.firstname, to_string(c.amount)};
+            player_file.createArrayAttribute("data",data);
+            player_file.end_Document();
+            player_file.save();
         }else{
-            int total_coins = c.amount;
-            createJSON(p.firstname,c.amount);;
+            player_file.start_Document();
+            std::string data[2] = {p.firstname, to_string(c.amount)};
+            player_file.createArrayAttribute("data",data);
+            player_file.end_Document();
+            player_file.save();
         }
         // write condition statements for each outcome
         if(s.file.exist(record_json)){
             if(p.getHealth() > 0){
-                cj.createRecord(p.chances.wins + 1, p.chances.losses, p.chances.ties);
+                record.start_Document();
+                record.createAttribute("wins", to_string(p.chances.wins + 1));
+                record.addComma();
+                record.createAttribute("losses", to_string(p.chances.losses));
+                record.addComma();
+                record.createAttribute("ties", to_string(p.chances.ties));
+                record.end_Document();
+                record.save();
             }
             if(p.getHealth() == 0){
-                cj.createRecord(p.chances.wins, p.chances.losses + 1, p.chances.ties);
+                record.start_Document();
+                record.createAttribute("wins", to_string(p.chances.wins));
+                record.addComma();
+                record.createAttribute("losses", to_string(p.chances.losses + 1));
+                record.addComma();
+                record.createAttribute("ties", to_string(p.chances.ties));
+                record.end_Document();
+                record.save();
             }
             if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
-                cj.createRecord(p.chances.wins, p.chances.losses, p.chances.ties + 1);
+                record.start_Document();
+                record.createAttribute("wins", to_string(p.chances.wins));
+                record.addComma();
+                record.createAttribute("losses", to_string(p.chances.losses));
+                record.addComma();
+                record.createAttribute("ties", to_string(p.chances.ties + 1));
+                record.end_Document();
+                record.save();
             }
         }else{
             if(p.getHealth() > 0){
-                cj.createRecord(p.chances.wins + 1, p.chances.losses, p.chances.ties);
+                record.start_Document();
+                record.createAttribute("wins", to_string(p.chances.wins + 1));
+                record.addComma();
+                record.createAttribute("losses", to_string(p.chances.losses));
+                record.addComma();
+                record.createAttribute("ties", to_string(p.chances.ties));
+                record.end_Document();
+                record.save();
             }
             if(p.getHealth() == 0){
-                cj.createRecord(p.chances.wins, p.chances.losses + 1, p.chances.ties);
+                record.start_Document();
+                record.createAttribute("wins", to_string(p.chances.wins));
+                record.addComma();
+                record.createAttribute("losses", to_string(p.chances.losses + 1));
+                record.addComma();
+                record.createAttribute("ties", to_string(p.chances.ties));
+                record.end_Document();
+                record.save();
             }
             if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
-                cj.createRecord(p.chances.wins, p.chances.losses, p.chances.ties + 1);
+                record.start_Document();
+                record.createAttribute("wins", to_string(p.chances.wins));
+                record.addComma();
+                record.createAttribute("losses", to_string(p.chances.losses));
+                record.addComma();
+                record.createAttribute("ties", to_string(p.chances.ties + 1));
+                record.end_Document();
+                record.save();
             }
         }
     }
@@ -306,41 +368,88 @@ int main() {
         s.file.mkDir("filesystem");
         if(s.file.exist(player_json)){
             s.file.deleteFile(player_json);
-            int total_coins = c.amount;
-            createJSON(p.firstname,c.amount);
+            player_file.start_Document();
+            std::string data[2] = {p.firstname, to_string(c.amount)};
+            player_file.createArrayAttribute("data",data);
+            player_file.end_Document();
+            player_file.save();
         }else{
-            int total_coins = c.amount;
-            createJSON(p.firstname,c.amount);;
+            player_file.start_Document();
+            std::string data[2] = {p.firstname, to_string(c.amount)};
+            player_file.createArrayAttribute("data",data);
+            player_file.end_Document();
+            player_file.save();
         }
         // write condition statements for each outcome
         if(s.file.exist(record_json)){
             if(p.getHealth() > 0){
-                cj.createRecord(p.chances.wins + 1, p.chances.losses, p.chances.ties);
+                record.start_Document();
+                record.createAttribute("wins", to_string(p.chances.wins + 1));
+                record.addComma();
+                record.createAttribute("losses", to_string(p.chances.losses));
+                record.addComma();
+                record.createAttribute("ties", to_string(p.chances.ties));
+                record.end_Document();
+                record.save();
             }
             if(p.getHealth() == 0){
-                cj.createRecord(p.chances.wins, p.chances.losses + 1, p.chances.ties);
+                record.start_Document();
+                record.createAttribute("wins", to_string(p.chances.wins));
+                record.addComma();
+                record.createAttribute("losses", to_string(p.chances.losses + 1));
+                record.addComma();
+                record.createAttribute("ties", to_string(p.chances.ties));
+                record.end_Document();
+                record.save();
             }
             if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
-                cj.createRecord(p.chances.wins, p.chances.losses, p.chances.ties + 1);
+                record.start_Document();
+                record.createAttribute("wins", to_string(p.chances.wins));
+                record.addComma();
+                record.createAttribute("losses", to_string(p.chances.losses));
+                record.addComma();
+                record.createAttribute("ties", to_string(p.chances.ties + 1));
+                record.end_Document();
+                record.save();
             }
         }else{
             if(p.getHealth() > 0){
-                cj.createRecord(p.chances.wins + 1, p.chances.losses, p.chances.ties);
+                record.start_Document();
+                record.createAttribute("wins", to_string(p.chances.wins + 1));
+                record.addComma();
+                record.createAttribute("losses", to_string(p.chances.losses));
+                record.addComma();
+                record.createAttribute("ties", to_string(p.chances.ties));
+                record.end_Document();
+                record.save();
             }
             if(p.getHealth() == 0){
-                cj.createRecord(p.chances.wins, p.chances.losses + 1, p.chances.ties);
+                record.start_Document();
+                record.createAttribute("wins", to_string(p.chances.wins));
+                record.addComma();
+                record.createAttribute("losses", to_string(p.chances.losses + 1));
+                record.addComma();
+                record.createAttribute("ties", to_string(p.chances.ties));
+                record.end_Document();
+                record.save();
             }
             if(p.getHealth() == 0 && gm.r.tunnel.b.getHealth() == 0){
-                cj.createRecord(p.chances.wins, p.chances.losses, p.chances.ties + 1);
+                record.start_Document();
+                record.createAttribute("wins", to_string(p.chances.wins));
+                record.addComma();
+                record.createAttribute("losses", to_string(p.chances.losses));
+                record.addComma();
+                record.createAttribute("ties", to_string(p.chances.ties + 1));
+                record.end_Document();
+                record.save();
             }
         }
     }
-    createJSON(p.firstname,c.amount);
-    s.log(s.JSON.getDocument(player_json));
+    s.log(player_file.getDoc());
     s.createLine(70);
-    s.log(s.JSON.getDocument(record_json));
+    s.log(record.getDoc());
     s.createLine(70);
-    s.log(s.JSON.get(player_json,"data",1));
+    s.log(player_file.get("data",1));
     s.createLine(70);
     // terminate program
     return 0;

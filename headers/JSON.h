@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 // RAPIDJSON lib
 #include "rapidjson/document.h"
 #include "rapidjson/istreamwrapper.h"
@@ -75,6 +76,7 @@ private:
     }
 
 };
+// Creates and Reads JSON Files
 class JSON_CREATOR {
 public:
     std::string File;
@@ -108,7 +110,7 @@ public:
             middle.append(x + ",");
         }
         middle.erase(std::prev(middle.end()));
-        std::string  end = array_After();
+        std::string end = array_After();
         // creating actual string
         std::string v = start + middle + end;
         text.append(v);
@@ -120,6 +122,16 @@ public:
     // Gets Filename
     std::string getFilename(){
         return File;
+    }
+    // saves file
+    void save(){
+        std::ofstream MyFile(File);
+
+        // Write to the file
+        MyFile << text;
+
+        // Close the file
+        MyFile.close();
     }
     // gets document string
     std::string getText(){
