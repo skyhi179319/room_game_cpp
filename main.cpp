@@ -37,9 +37,9 @@ int main() {
     // loading chances
     if(s.file.dirExist("filesystem")){
         if(s.file.exist(record_json)){
-            int wins = s.convert.convertFromString(record.getString("wins"));
-            int losses = s.convert.convertFromString(record.getString("losses"));
-            int ties = s.convert.convertFromString(record.getString("ties"));
+            int wins = s.convert.stringToInt(record.getString("wins"));
+            int losses = s.convert.stringToInt(record.getString("losses"));
+            int ties = s.convert.stringToInt(record.getString("ties"));
             p.chances.wins = wins;
             p.chances.losses = losses;
             p.chances.ties = ties;
@@ -52,9 +52,9 @@ int main() {
             record.createAttribute("ties", to_string(0));
             record.end_Document();
             record.save();
-            int wins = s.convert.convertFromString(record.getString("wins"));
-            int losses = s.convert.convertFromString(record.getString("losses"));
-            int ties = s.convert.convertFromString(record.getString("ties"));
+            int wins = s.convert.stringToInt(record.getString("wins"));
+            int losses = s.convert.stringToInt(record.getString("losses"));
+            int ties = s.convert.stringToInt(record.getString("ties"));
             p.chances.wins = wins;
             p.chances.losses = losses;
             p.chances.ties = ties;
@@ -63,9 +63,9 @@ int main() {
     else{
         s.file.mkDir("filesystem");
         if(s.file.exist(record_json)){
-            int wins = s.convert.convertFromString(record.getString("wins"));
-            int losses = s.convert.convertFromString(record.getString("losses"));
-            int ties = s.convert.convertFromString(record.getString("ties"));
+            int wins = s.convert.stringToInt(record.getString("wins"));
+            int losses = s.convert.stringToInt(record.getString("losses"));
+            int ties = s.convert.stringToInt(record.getString("ties"));
             p.chances.wins = wins;
             p.chances.losses = losses;
             p.chances.ties = ties;
@@ -78,9 +78,9 @@ int main() {
             record.createAttribute("ties", to_string(0));
             record.end_Document();
             record.save();
-            int wins = s.convert.convertFromString(record.getString("wins"));
-            int losses = s.convert.convertFromString(record.getString("losses"));
-            int ties = s.convert.convertFromString(record.getString("ties"));
+            int wins = s.convert.stringToInt(record.getString("wins"));
+            int losses = s.convert.stringToInt(record.getString("losses"));
+            int ties = s.convert.stringToInt(record.getString("ties"));
             p.chances.wins = wins;
             p.chances.losses = losses;
             p.chances.ties = ties;
