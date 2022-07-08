@@ -13,7 +13,7 @@ public:
     coins(){
         sys s;
         if(s.file.exist(player_json)){
-            int coins_have = s.convert.convertFromString(player_store_file.get("data",1));
+            int coins_have = s.convert.stringToInt(player_store_file.get("data",1));
             if(coins_have < MAX_COINS){
                 amount = coins_have;
             } else{
